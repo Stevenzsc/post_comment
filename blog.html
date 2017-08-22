@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+	</head>
+	<style type="text/css">
+		html,
+		body {
+			background-color: #222;
+			width: 100%;
+			height: 100%;
+			/*overflow-x:hidden;*/
+		}
+		
+		.bubble-speech {
+			position: relative;
+			font-family: 'Source Sans Pro', sans-serif;
+			margin: auto;
+			line-height: 22px;
+			letter-spacing: 1px;
+			margin-top: 16px;
+			margin-bottom: 48px;
+			width: 300px;
+			background-color: #efefef;
+			padding: 16px;
+		}
+		
+		.bubble-speech.bubble-left:after {
+			z-index: 9002;
+			display: block;
+			content: "";
+			position: absolute;
+			bottom: -11px;
+			left: 0;
+			border-top: 0 #efefef solid;
+			border-bottom: 12px transparent solid;
+			border-left: 20px #efefef solid;
+		}
+		
+		.bubble-square {
+			width: 33px;
+			height: 25px;
+			text-align: center;
+		}
+		
+		.bubble-speech.bubble-center:after {
+			z-index: 9002;
+			display: block;
+			content: "";
+			position: absolute;
+			bottom: -11px;
+			left: 50%;
+			margin-left: -18px;
+			border-right: 20px transparent solid;
+			border-top: 12px #efefef solid;
+			border-left: 20px transparent solid;
+		}
+		
+		.bubble-speech.bubble-right:after {
+			z-index: 9002;
+			display: block;
+			content: "";
+			position: absolute;
+			bottom: -11px;
+			right: 0;
+			border-top: 0 #efefef solid;
+			border-bottom: 12px transparent solid;
+			border-right: 20px #efefef solid;
+		}
+		
+		.bubble-speech .author {
+			max-width: 200px;
+			font-weight: bold;
+			margin: 0;
+			padding: 0 12px 2px 0;
+		}
+		
+		#myReplyBtn {
+			width: 300px;
+			border: none;
+			outline: none;
+			background: #efefef;
+			padding: 16px;
+			letter-spacing: 10px;
+			font-size: x-large;
+		}
+		
+		#replyPopUpDiv {
+			line-height: 22px;
+			letter-spacing: 1px;
+			margin: 0 auto;
+			left: 0;
+			right: 0;
+		}
+		
+		@keyframes myAnimations {
+			0% {
+				opacity: 0;
+				transform: translateY(50px);
+			}
+			100% {
+				opacity: 1;
+				transform: translateY(0px);
+			}
+		}
+		
+		@keyframes myAnimations2 {
+			0% {
+				opacity: 1;
+				transform: translateY(0px);
+			}
+			100% {
+				opacity: 0;
+				transform: translateY(50px);
+			}
+		}
+	</style>
+	<script>
+	var temp_div
+		var name = 'Steven Zhou'
+		var reply = 'Till the eclipse, I had my innocence, I had a little sense until you placed your love on my lips'
+		function replyPopUp() {
+			document.getElementById('replyPopUpDiv').style.display = 'block'
+			document.getElementById('myReplyBtn').disabled = 'disabled'
+			var div_container = document.getElementById('replyPopUpDiv');
+			div_container.setAttribute('class', 'bubble-speech')
+			div_container.style.width = '500px'
+			div_container.style.height = '280px'
+			div_container.style.top = '25%'
+			div_container.style.position = 'fixed'
+			div_container.style.zIndex = 9010
+			div_container.style.boxShadow = "4px 4px 10px rgba(0,0,0,.4)"
+			div_container.style.backgroundColor = "#eee"
+
+			var input_name = document.createElement('input');
+			input_name.style.width = '480px'
+			input_name.style.height = '8%'
+			input_name.style.padding = '10px'
+			input_name.style.border = 'none'
+			input_name.style.backgroundColor = '#ddd'
+			input_name.value=name
+			div_container.appendChild(input_name);
+
+			var input_reply = document.createElement('textarea');
+			input_reply.style.resize = 'none'
+			input_reply.style.width = '480px'
+			input_reply.style.height = '55%'
+			input_reply.style.padding = '10px'
+			input_reply.style.border = 'none'
+			input_reply.style.backgroundColor = '#ddd'
+			input_reply.value=reply
+			div_container.appendChild(input_reply);
+
+			var reply_btn = document.createElement('button');
+			reply_btn.style.border = 'none'
+			reply_btn.style.outline = 'none'
+			reply_btn.innerHTML = '回    复'
+			reply_btn.style.fontSize = '30px'
+			reply_btn.style.width = '90%'
+			reply_btn.style.height = '20%'
+			reply_btn.style.left = '5%'
+			reply_btn.style.position = 'relative'
+			document.getElementById('replyPopUpDiv').style.animation = "myAnimations 0.5s"
+			div_container.appendChild(reply_btn);
+			reply_btn.onclick = function() {
+				name = input_name.value
+				reply= input_reply.value 
+				var insertText = "<div><h2 class='author''>"+name+"</h2><div class='message'>" + reply + "</div></div>"
+				reply=''
+				temp_div = document.createElement('div');
+				temp_div.setAttribute('id', 'temp_div')
+				temp_div.setAttribute('class', 'bubble-speech bubble-right')
+				document.getElementsByTagName("body")[0].appendChild(temp_div)
+				temp_div.innerHTML = insertText;
+
+				
+				var list = document.getElementById('replyPopUpDiv').children
+				for(var i = 0; i < list.length; i) {
+					list[i].remove()
+				}
+				document.getElementById('replyPopUpDiv').style.animation = "myAnimations2 0.5s"
+				setTimeout(function() {
+					document.getElementById('replyPopUpDiv').style.display = 'none'
+				}, 400)
+
+				document.getElementById('myReplyBtn').removeAttribute('disabled')
+				temp_div.style.animation = "myAnimations 1s"
+				scrollToBottom()
+			}
+		}
+
+		
+	</script>
+
+	<body>
+		
+		<div id="replyPopUpDiv"></div>
+		<div class="bubble-speech">
+			<button onclick="replyPopUp()" id="myReplyBtn">回复</button>
+		</div>
+		<script>
+		function scrollToBottom() {
+			//interval = setInterval("scroller()", delay);
+			$('html,body').stop();  
+        $('html,body').animate({  
+            scrollTop:$(temp_div).offset().top
+        },1000);   
+		}
+		
+		
+		var delay = 10; //in milliseconds
+		var scroll_amount = document.body.offsetHeight/10 // in pixels
+		var interval;
+		var i=0
+		function scroller() {
+			var old = document.body.scrollTop; //保存当前滚动条到顶端的距离
+			document.body.scrollTop += scroll_amount; //让滚动条继续往下滚动
+
+			if(document.body.scrollTop == old) { //到底部后就无法再增加scrollTop的值
+				clearInterval(interval);
+			}
+		}
+
+		
+		</script>
+	</body>
+
+</html>
